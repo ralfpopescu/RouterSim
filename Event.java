@@ -17,6 +17,7 @@ public class Event {
 
     public Event(String s){
         String[] split = s.split("\\s+");
+        System.out.println(s);
         int round = Integer.parseInt(split[0]);
         int r1 = Integer.parseInt(split[1]);
         int r2 = Integer.parseInt(split[2]);
@@ -27,6 +28,22 @@ public class Event {
         this.router2 = r2;
         this.cost = cost;
 
+    }
+
+    public int getRound(){
+        return round;
+    }
+
+    public int getCost(){
+        return cost;
+    }
+
+    public int getRouter1(){
+        return router1;
+    }
+
+    public int getRouter2(){
+        return router2;
     }
 
 }

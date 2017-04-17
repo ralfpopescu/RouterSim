@@ -6,13 +6,25 @@ import java.util.ArrayList;
 public class Router {
 
     ArrayList<Router> neighbors = new ArrayList<Router>();
-    ArrayList<Link> links = new ArrayList<Link>();
+    //ArrayList<Link> links = new ArrayList<Link>();
     int num;
-    ArrayList<Integer> distanceVector = new ArrayList<Integer>();
+    int numOfRouters;
+    int[] distanceVector;
+    int[][] routingTable;
+    Network network;
 
 
-    public Router(int num){
+    public Router(int num, int numOfRouters, Network network){
         this.num = num;
+        this.numOfRouters = numOfRouters;
+        this.network = network;
+
+        routingTable = new int[numOfRouters][numOfRouters];
+        distanceVector = new int[numOfRouters];
+
+        for(int i = 0; i < numOfRouters; i++){
+            distanceVector[i] = 999999;
+        }
     }
 
     public void addNeighbor(Router routerToAdd){
@@ -20,32 +32,64 @@ public class Router {
 
     }
 
-    public boolean removeNeighbor(int routerToRemove){
-        for (int i = 0; i < neighbors.size(); i++) {
-            if (neighbors.get(i).getNum() == i){
-               neighbors.remove(i);
-                return true;
-            }
+
+    public ArrayList<Router> getNeighbors(){
+        ArrayList<Router> routers = network.getRouters();
+        ArrayList<Integer> neighborNums = network.getNeighbors(num);
+        ArrayList<Router> neighbors = new ArrayList<Router>();
+
+        for(int x: neighborNums) {
+            neighbors.add(routers.get(x));
         }
-        return false;
+
+        return neighbors;
+
     }
 
     public int getNum(){
         return num;
     }
 
-    public ArrayList<Router> getNeighbors(){
-        return neighbors;
+    public boolean propogateVector(){
+        boolean changed = false;
+        ArrayList<Router> neighbors = getNeighbors();
+        for(Router neighbor: neighbors){
+            changed = changed || neighbor.updateDistanceVectorWithAnotherVector(distanceVector);
+        }
 
+        return changed;
     }
 
-    public void addLink(Link l){
-        links.add(l);
+    public boolean updateDistanceVectorWithAnotherVector(int[] otherVector){
+        boolean changed = false;
+        for (int i = 0; i < numOfRouters; i++){
+            int originalCostToI = distanceVector[i];
+            int newCostToI = distanceVector[i] + otherVector[i];
+            if(newCostToI < originalCostToI){
+                distanceVector[i] = newCostToI;
+                changed = true;
+            }
+        }
+
+        return changed;
     }
 
-    public void invalidate(){
-        num = -1;
+    public void initDistanceVector(){
+        int[][] adjMatrix = network.getAdjMatrix();
+
+        for (int i=0;i<numOfRouters;i++){
+            if (adjMatrix[num][i] != -1){
+                distanceVector[i] = adjMatrix[num][i];
+            }
+        }
     }
+
+    public int[] getDistanceVector(){
+        return distanceVector;
+    }
+
+
+
 
 
 }

@@ -6,29 +6,42 @@ import java.util.ArrayList;
 
 public class Network {
 
-    ArrayList<Router> routers = new ArrayList<Router>();
-    ArrayList<Link> links = new ArrayList<Link>();
-    ArrayList<ArrayList<Integer>> adjMatrix = new ArrayList<ArrayList<Integer>>();
+    ArrayList<Router> routers;
+    ArrayList<Link> links;
+    int[][] adjMatrix;
+    int numOfRouters;
+
 
     public Network(){
-
+        routers = new ArrayList<Router>();
+        links = new ArrayList<Link>();
     }
 
-
-    public void addRouter(Router r){
-        routers.add(r);
-    }
 
 
     public void initializeNetwork(ArrayList<String> input){
 
-        for(int i = 0; i < Integer.parseInt(input.get(0)); i++){
-            addRouter(new Router(i));
+        numOfRouters = Integer.parseInt(input.get(0));
+        adjMatrix = new int[numOfRouters][numOfRouters];
+
+        for(int i =0; i < numOfRouters; i++){
+            for(int j =0; j < numOfRouters; j++){
+                adjMatrix[i][j] = -1;
+            }
+        }
+
+        for(int i = 0; i < numOfRouters; i++){
+            routers.add(new Router(i, numOfRouters, this));
         }
 
         for (int j = 1; j < input.size(); j++){
             addLink(input.get(j));
         }
+
+        for(Router r: routers){
+            r.initDistanceVector();
+        }
+
 
     }
 
@@ -38,50 +51,67 @@ public class Network {
         int r2 = Integer.parseInt(split[1]);
         int cost = Integer.parseInt(split[2]);
 
-        Link l = new Link(getRouter(r1), getRouter(r2), cost);
-        links.add(l);
 
-        Router rtr1 = getRouter(r1);
-        Router rtr2 = getRouter(r2);
-
-        rtr1.addLink(l);
-        rtr2.addLink(l);
-        rtr1.addNeighbor(rtr2);
-        rtr2.addNeighbor(rtr1);
+        adjMatrix[r1][r2] = cost;
+        adjMatrix[r2][r1] = cost;
 
     }
 
-    public boolean removeRouter(int rem){
-        return false;
-    }
 
-    public boolean removeLink(){
-        return false;
+    public ArrayList<Integer> getNeighbors(int i){
+
+        ArrayList<Integer> neighbors = new ArrayList<Integer>();
+
+        for (int j =0; j < numOfRouters; j++){
+            if(adjMatrix[i][j] != -1){
+                neighbors.add(j);
+            }
+        }
+        return neighbors;
     }
 
     public Router getRouter(int x){
+        return routers.get(x);
+    }
 
+    public void executeEvent(Event e){
+        int r1 = e.getRouter1();
+        int r2 = e.getRouter2();
+        int cost = e.getCost();
+
+        adjMatrix[r1][r2] = cost;
+        adjMatrix[r2][r1] = cost;
+    }
+
+    public int[][] getAdjMatrix(){
+        return adjMatrix;
+    }
+
+    public boolean propogate(){
+        boolean changed = false;
         for(Router r: routers){
-            if (r.getNum() == x){
-                return r;
-            }
+            changed = changed || r.propogateVector();
         }
-        return null;
+        return changed;
     }
 
-    public void makeAdjMatrix(){
-        for(Link l: links){
-            int r1 = l.getRouter1().getNum();
-            int r2 = l.getRouter2().getNum();
-            int cost = l.getCost();
+    public String stats(){
+        String stats = "";
+        for(int i=0;i<numOfRouters;i++){
+            int[] dv = routers.get(i).getDistanceVector();
+            String dvs = "";
+            for(int j =0; j < dv.length; j++){
+                dvs += (Integer.toString(dv[j]));
+            }
+            stats += "Router " + i + " Distance Vector: " + dvs + "\n";
         }
+        return stats;
     }
+
 
     public ArrayList<Router> getRouters(){
         return routers;
     }
 
-    public ArrayList<Link> getLinks(){
-        return links;
-    }
+
 }

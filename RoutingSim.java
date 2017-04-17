@@ -14,7 +14,6 @@ public class RoutingSim {
         int round = 0;
         boolean converged = false;
 
-        FileInputStream file;
         ArrayList<String> lines = new ArrayList<String>();
 
         Scanner scanner = null; //get information from text file
@@ -30,13 +29,11 @@ public class RoutingSim {
 
         network.initializeNetwork(lines);
 
-
-        FileInputStream file2;
         ArrayList<Event> events = new ArrayList<Event>();
 
         scanner = null; //get information from text file
         try {
-            scanner = new Scanner(new File(args[0]));
+            scanner = new Scanner(new File(args[1]));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -48,7 +45,18 @@ public class RoutingSim {
 
         while(!converged){
 
+            for(Event e:events){
+                if (e.getRound() == round){
+                    network.executeEvent(e);
+                }
+            }
+
+            converged = !(network.propogate());
+
+            round++;
         }
+
+        System.out.println(network.stats());
 
     }
 

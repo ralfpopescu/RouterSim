@@ -30,6 +30,18 @@ public class Link {
         return B;
     }
 
+    public Router getOther(int i){
+
+        if(A.getNum() == i){
+            return B;
+        } else {
+            if(B.getNum() == i)
+                return A;
+            else
+                return null;
+        }
+    }
+
     public int getCost(){
         return cost;
     }
