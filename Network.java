@@ -94,15 +94,34 @@ public class Network {
         return changed;
     }
 
+    public boolean splitHorizonPropogate(){
+        boolean changed = false;
+        for(Router r: routers){
+            changed = changed || r.propogateSplitHorizon();
+        }
+        return changed;
+    }
+
+    public boolean poisonPropogate(){
+        boolean changed = false;
+        for(Router r: routers){
+            changed = changed || r.propogatePoison();
+        }
+        return changed;
+    }
+
     public String stats(){
         String stats = "";
         for(int i=0;i<numOfRouters;i++){
             int[] dv = routers.get(i).getDistanceVector();
+            int[] nv = routers.get(i).getNextVector();
             String dvs = "";
+            String nvs = "";
             for(int j =0; j < dv.length; j++){
                 dvs += (Integer.toString(dv[j])) + " ";
+                nvs += (Integer.toString(nv[j])) + " ";
             }
-            stats += "Router " + i + " Distance Vector: " + dvs + "\n";
+            stats += "Router " + i + " Distance Vector: " + dvs + ", Next Vector: " + nvs + "\n";
         }
         return stats;
     }

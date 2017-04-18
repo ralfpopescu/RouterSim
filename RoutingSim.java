@@ -11,6 +11,8 @@ public class RoutingSim {
     public static void main(String args[]) {
 
         Network network = new Network();
+        Network splitHorizonNetwork = new Network();
+        Network poisonNetwork = new Network();
         int round = 0;
         boolean converged = false;
 
@@ -28,6 +30,8 @@ public class RoutingSim {
         }
 
         network.initializeNetwork(lines);
+        splitHorizonNetwork.initializeNetwork(lines);
+        poisonNetwork.initializeNetwork(lines);
 
         ArrayList<Event> events = new ArrayList<Event>();
 
@@ -43,23 +47,60 @@ public class RoutingSim {
             events.add(e);
         }
 
-        while(!converged){
-
+        while(!converged){ //basic routing
             for(Event e:events){
                 if (e.getRound() == round){
                     network.executeEvent(e);
                 }
             }
-
             converged = !(network.propogate());
-
             round++;
-            System.out.println("Round: " + round);
-            System.out.println(network.stats());
+            //System.out.println("Round: " + round);
+            //System.out.println(network.stats());
         }
+        System.out.println("BASIC ROUTING");
+        System.out.println(network.stats());
+        System.out.println("Number of Rounds: " + round);
 
+        converged = false;
+        round = 0;
+
+        while(!converged){ //split horizon routing
+            for(Event e:events){
+                if (e.getRound() == round){
+                    splitHorizonNetwork.executeEvent(e);
+                }
+            }
+            converged = !(splitHorizonNetwork.splitHorizonPropogate());
+            round++;
+            //System.out.println("Round: " + round);
+            //System.out.println(network.stats());
+        }
+        System.out.println("SPLIT HORIZON");
+        System.out.println("Number of Rounds: " + round);
+        System.out.println(network.stats());
+
+
+        converged = false;
+        round = 0;
+
+        while(!converged){ //poison routing
+            for(Event e:events){
+                if (e.getRound() == round){
+                    poisonNetwork.executeEvent(e);
+                }
+            }
+            converged = !(poisonNetwork.poisonPropogate());
+            round++;
+            //System.out.println("Round: " + round);
+            //System.out.println(network.stats());
+        }
+        System.out.println("POISON");
+        System.out.println("Number of Rounds: " + round);
         System.out.println(network.stats());
 
     }
+
+
 
 }

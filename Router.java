@@ -99,9 +99,9 @@ public class Router {
             int originalCostToI = distanceVector[i];
             int newCostToI = distanceVector[routerID] + otherVector[i];
 
-            System.out.println("Router " + num + " Distance to " + i + ": " + originalCostToI + ", Distance from Router " + routerID + ": " + otherVector[i]);
+            //System.out.println("Router " + num + " Distance to " + i + ": " + originalCostToI + ", Distance from Router " + routerID + ": " + otherVector[i]);
             if(newCostToI < originalCostToI) {
-                System.out.println("updated");
+                //System.out.println("updated");
                 distanceVector[i] = newCostToI;
                 nextVector[i] = routerID;
                 changed = true;
@@ -120,10 +120,14 @@ public class Router {
 
             int originalCostToI = distanceVector[i];
             int newCostToI = distanceVector[routerID] + otherVector[i];
+            int nextHop = nextVector[i];
 
-            System.out.println("Router " + num + " Distance to " + i + ": " + originalCostToI + ", Distance from Router " + routerID + ": " + otherVector[i]);
+            //System.out.println("Router " + num + " Distance to " + i + ": " + originalCostToI + ", Distance from Router " + routerID + ": " + otherVector[i]);
             if(newCostToI < originalCostToI) {
-                System.out.println("updated");
+                if(nextHop == num){ //skip if next hop
+                    break;
+                }
+                //System.out.println("updated");
                 distanceVector[i] = newCostToI;
                 nextVector[i] = routerID;
                 changed = true;
@@ -141,11 +145,16 @@ public class Router {
             }
 
             int originalCostToI = distanceVector[i];
+            int nextHop = nextVector[i];
             int newCostToI = distanceVector[routerID] + otherVector[i];
+            if(nextHop == num){
+                originalCostToI = Integer.MAX_VALUE;
+            }
 
-            System.out.println("Router " + num + " Distance to " + i + ": " + originalCostToI + ", Distance from Router " + routerID + ": " + otherVector[i]);
+
+            //System.out.println("Router " + num + " Distance to " + i + ": " + originalCostToI + ", Distance from Router " + routerID + ": " + otherVector[i]);
             if(newCostToI < originalCostToI) {
-                System.out.println("updated");
+                //System.out.println("updated");
                 distanceVector[i] = newCostToI;
                 nextVector[i] = routerID;
                 changed = true;
@@ -160,7 +169,7 @@ public class Router {
         for (int i=0;i<numOfRouters;i++){
             if (adjMatrix[num][i] != -1){
                 distanceVector[i] = adjMatrix[num][i];
-                nextVector[i] = adjMatrix[num][i];
+                nextVector[i] = i;
             }
         }
         distanceVector[num] = 0;
@@ -169,6 +178,11 @@ public class Router {
     public int[] getDistanceVector(){
         return distanceVector;
     }
+
+    public int[] getNextVector(){
+        return nextVector;
+    }
+
 
 
 
