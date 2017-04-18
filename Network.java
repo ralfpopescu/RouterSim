@@ -51,7 +51,6 @@ public class Network {
         int r2 = Integer.parseInt(split[1]);
         int cost = Integer.parseInt(split[2]);
 
-
         adjMatrix[r1][r2] = cost;
         adjMatrix[r2][r1] = cost;
 
@@ -101,7 +100,7 @@ public class Network {
             int[] dv = routers.get(i).getDistanceVector();
             String dvs = "";
             for(int j =0; j < dv.length; j++){
-                dvs += (Integer.toString(dv[j]));
+                dvs += (Integer.toString(dv[j])) + " ";
             }
             stats += "Router " + i + " Distance Vector: " + dvs + "\n";
         }

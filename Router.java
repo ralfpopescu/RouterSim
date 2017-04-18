@@ -10,6 +10,7 @@ public class Router {
     int num;
     int numOfRouters;
     int[] distanceVector;
+    int[] nextVector;
     int[][] routingTable;
     Network network;
 
@@ -21,6 +22,7 @@ public class Router {
 
         routingTable = new int[numOfRouters][numOfRouters];
         distanceVector = new int[numOfRouters];
+        nextVector = new int[numOfRouters];
 
         for(int i = 0; i < numOfRouters; i++){
             distanceVector[i] = 999999;
@@ -53,24 +55,33 @@ public class Router {
     public boolean propogateVector(){
         boolean changed = false;
         ArrayList<Router> neighbors = getNeighbors();
+
         for(Router neighbor: neighbors){
-            changed = changed || neighbor.updateDistanceVectorWithAnotherVector(distanceVector);
+            //System.out.println("Router num: " + num + " Neighbor: " + neighbor.getNum());
+            changed = changed || neighbor.updateDistanceVectorWithAnotherVector(distanceVector, num);
         }
 
         return changed;
     }
 
-    public boolean updateDistanceVectorWithAnotherVector(int[] otherVector){
+    public boolean updateDistanceVectorWithAnotherVector(int[] otherVector, int routerID){
         boolean changed = false;
-        for (int i = 0; i < numOfRouters; i++){
+        for (int i = 0; i < numOfRouters; i++) {
+
+            if(i == num){
+                continue;
+            }
+
             int originalCostToI = distanceVector[i];
-            int newCostToI = distanceVector[i] + otherVector[i];
-            if(newCostToI < originalCostToI){
+            int newCostToI = distanceVector[routerID] + otherVector[i];
+
+            System.out.println("Router " + num + " Distance to " + i + ": " + originalCostToI + ", Distance from Router " + routerID + ": " + otherVector[i]);
+            if(newCostToI < originalCostToI) {
+                System.out.println("updated");
                 distanceVector[i] = newCostToI;
                 changed = true;
             }
         }
-
         return changed;
     }
 
@@ -80,8 +91,10 @@ public class Router {
         for (int i=0;i<numOfRouters;i++){
             if (adjMatrix[num][i] != -1){
                 distanceVector[i] = adjMatrix[num][i];
+                nextVector[i] = adjMatrix[num][i];
             }
         }
+        distanceVector[num] = 0;
     }
 
     public int[] getDistanceVector(){
