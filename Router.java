@@ -64,6 +64,30 @@ public class Router {
         return changed;
     }
 
+    public boolean propogateSplitHorizon(){
+        boolean changed = false;
+        ArrayList<Router> neighbors = getNeighbors();
+
+        for(Router neighbor: neighbors){
+            //System.out.println("Router num: " + num + " Neighbor: " + neighbor.getNum());
+            changed = changed || neighbor.splitHorizonUpdate(distanceVector, nextVector, num);
+        }
+
+        return changed;
+    }
+
+    public boolean propogatePoison(){
+        boolean changed = false;
+        ArrayList<Router> neighbors = getNeighbors();
+
+        for(Router neighbor: neighbors){
+            //System.out.println("Router num: " + num + " Neighbor: " + neighbor.getNum());
+            changed = changed || neighbor.poisonUpdate(distanceVector, nextVector, num);
+        }
+
+        return changed;
+    }
+
     public boolean updateDistanceVectorWithAnotherVector(int[] otherVector, int routerID){
         boolean changed = false;
         for (int i = 0; i < numOfRouters; i++) {
@@ -79,6 +103,51 @@ public class Router {
             if(newCostToI < originalCostToI) {
                 System.out.println("updated");
                 distanceVector[i] = newCostToI;
+                nextVector[i] = routerID;
+                changed = true;
+            }
+        }
+        return changed;
+    }
+
+    public boolean splitHorizonUpdate(int[] otherVector, int[] nextVector, int routerID){
+        boolean changed = false;
+        for (int i = 0; i < numOfRouters; i++) {
+
+            if(i == num){
+                continue;
+            }
+
+            int originalCostToI = distanceVector[i];
+            int newCostToI = distanceVector[routerID] + otherVector[i];
+
+            System.out.println("Router " + num + " Distance to " + i + ": " + originalCostToI + ", Distance from Router " + routerID + ": " + otherVector[i]);
+            if(newCostToI < originalCostToI) {
+                System.out.println("updated");
+                distanceVector[i] = newCostToI;
+                nextVector[i] = routerID;
+                changed = true;
+            }
+        }
+        return changed;
+    }
+
+    public boolean poisonUpdate(int[] otherVector, int[] nextVector, int routerID){
+        boolean changed = false;
+        for (int i = 0; i < numOfRouters; i++) {
+
+            if(i == num){
+                continue;
+            }
+
+            int originalCostToI = distanceVector[i];
+            int newCostToI = distanceVector[routerID] + otherVector[i];
+
+            System.out.println("Router " + num + " Distance to " + i + ": " + originalCostToI + ", Distance from Router " + routerID + ": " + otherVector[i]);
+            if(newCostToI < originalCostToI) {
+                System.out.println("updated");
+                distanceVector[i] = newCostToI;
+                nextVector[i] = routerID;
                 changed = true;
             }
         }
