@@ -26,6 +26,7 @@ public class Router {
 
         for(int i = 0; i < numOfRouters; i++){
             distanceVector[i] = INFINITY;
+            nextVector[i] = -1;
         }
     }
 
@@ -65,27 +66,41 @@ public class Router {
     }
 
     public boolean propogateSplitHorizon(){
-        boolean changed = false;
-        ArrayList<Router> neighbors = getNeighbors();
+      boolean changed = false;
+      ArrayList<Router> neighbors = getNeighbors();
 
-        for(Router neighbor: neighbors){
-            //System.out.println("Router num: " + num + " Neighbor: " + neighbor.getNum());
-            changed = changed || neighbor.splitHorizonUpdate(distanceVector, nextVector, num);
-        }
+      for(Router neighbor: neighbors){
+          //System.out.println("Router num: " + num + " Neighbor: " + neighbor.getNum())
+          int[] distV = new int[numOfRouters];
+          distV = distanceVector.clone();
+          for (int i = 0; i < numOfRouters; i++) {
+            distV[i] = nextVector[i] == neighbor.getNum() ? -1 : distanceVector[i];
+          }
+          System.out.println(printDistanceRouter(distV));
 
-        return changed;
+          changed = changed || neighbor.updateDistanceVectorWithAnotherVector(distV, num);
+      }
+
+      return changed;
     }
 
     public boolean propogatePoison(){
-        boolean changed = false;
-        ArrayList<Router> neighbors = getNeighbors();
+      boolean changed = false;
+      ArrayList<Router> neighbors = getNeighbors();
 
-        for(Router neighbor: neighbors){
-            //System.out.println("Router num: " + num + " Neighbor: " + neighbor.getNum());
-            changed = changed || neighbor.poisonUpdate(distanceVector, nextVector, num);
-        }
+      for(Router neighbor: neighbors){
+          //System.out.println("Router num: " + num + " Neighbor: " + neighbor.getNum())
+          int[] distV = new int[numOfRouters];
+          distV = distanceVector.clone();
+          for (int i = 0; i < numOfRouters; i++) {
+            distV[i] = nextVector[i] == neighbor.getNum() ? INFINITY : distanceVector[i];
+          }
+          System.out.println(printDistanceRouter(distV));
 
-        return changed;
+          changed = changed || neighbor.updateDistanceVectorWithAnotherVector(distV, num);
+      }
+
+      return changed;
     }
 
     public boolean updateDistanceVectorWithAnotherVector(int[] otherVector, int routerID){
@@ -99,7 +114,7 @@ public class Router {
             }
 
             int originalCostToI = distanceVector[i];
-            int newCostToI = distanceVector[routerID] + otherVector[i];
+            int newCostToI = network.getAdjMatrix()[num][routerID] + otherVector[i];
 
             //System.out.println("Router " + num + " Distance to " + i + ": " + originalCostToI + ", Distance from Router " + routerID + ": " + otherVector[i]);
             if(newCostToI < originalCostToI) {
@@ -190,6 +205,10 @@ public class Router {
       int[] distVect, nextVect;
       int shortestDist = e.getCost();
       nextVector[r] = r;
+      if (neigh.size() == 0) {
+        distanceVector[r] = INFINITY;
+        nextVector[r] = -1;
+      }
       for(Router s: neigh) {
         distVect = s.getDistanceVector();
         nextVect = s.getNextVector();
@@ -203,6 +222,22 @@ public class Router {
 
       // return changed;
 
+    }
+    public String printDistanceRouter() {
+      String print = "Distance Vector of Router: " + num + "<";
+      for (int i = 0; i <numOfRouters; i++ ) {
+        print += "(" +i+","+distanceVector[i]+"),";
+      }
+      print += ">";
+      return print;
+    }
+    public String printDistanceRouter(int[] vector) {
+      String print = "Distance Vector of Router: " + num + "<";
+      for (int i = 0; i <vector.length; i++ ) {
+        print += "(" +i+","+vector[i]+"),";
+      }
+      print += ">";
+      return print;
     }
 
 

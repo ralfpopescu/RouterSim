@@ -77,7 +77,10 @@ public class Network {
         int r1 = e.getRouter1();
         int r2 = e.getRouter2();
         int cost = e.getCost();
+        if (cost == -1) {
+          System.out.println("Remove link: " + r1 +"-" +r2);
 
+        }
         adjMatrix[r1][r2] = cost;
         adjMatrix[r2][r1] = cost;
 
@@ -86,6 +89,8 @@ public class Network {
 
         router1.eventUpdate(e, r2);
         router2.eventUpdate(e, r1);
+        System.out.println(router2.printDistanceRouter());
+
 
 
     }

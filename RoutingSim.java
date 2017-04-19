@@ -55,6 +55,9 @@ public class RoutingSim {
             }
             converged = !(network.propogate());
             round++;
+            System.out.println("Number of Rounds: " + round);
+            System.out.println(network.stats());
+
             //System.out.println("Round: " + round);
             //System.out.println(network.stats());
         }
