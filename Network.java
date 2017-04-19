@@ -80,6 +80,14 @@ public class Network {
 
         adjMatrix[r1][r2] = cost;
         adjMatrix[r2][r1] = cost;
+
+        Router router1 = getRouter(r1);
+        Router router2 = getRouter(r2);
+
+        router1.eventUpdate(e, r2);
+        router2.eventUpdate(e, r1);
+
+
     }
 
     public int[][] getAdjMatrix(){

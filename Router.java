@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * Created by ralfpopescu on 4/12/17.
  */
 public class Router {
-
+    final int INFINITY = 999999;
     ArrayList<Router> neighbors = new ArrayList<Router>();
     //ArrayList<Link> links = new ArrayList<Link>();
     int num;
@@ -25,7 +25,7 @@ public class Router {
         nextVector = new int[numOfRouters];
 
         for(int i = 0; i < numOfRouters; i++){
-            distanceVector[i] = 999999;
+            distanceVector[i] = INFINITY;
         }
     }
 
@@ -90,6 +90,8 @@ public class Router {
 
     public boolean updateDistanceVectorWithAnotherVector(int[] otherVector, int routerID){
         boolean changed = false;
+        int[] oldDistVector = distanceVector;
+        // distanceVector = initDistanceVector();
         for (int i = 0; i < numOfRouters; i++) {
 
             if(i == num){
@@ -182,6 +184,27 @@ public class Router {
     public int[] getNextVector(){
         return nextVector;
     }
+    public boolean eventUpdate(Event e, int r){
+      int oldNext = nextVector[r];
+      ArrayList<Router> neigh = getNeighbors();
+      int[] distVect, nextVect;
+      int shortestDist = e.getCost();
+      nextVector[r] = r;
+      for(Router s: neigh) {
+        distVect = s.getDistanceVector();
+        nextVect = s.getNextVector();
+        int newDist = distVect[r] + network.getAdjMatrix()[num][s.getNum()];
+        if (newDist < shortestDist || shortestDist == -1) {
+          distanceVector[r] = newDist;
+          nextVector[r] = s.getNum();
+        }
+      }
+      return nextVector[r] == oldNext;
+
+      // return changed;
+
+    }
+
 
 
 
