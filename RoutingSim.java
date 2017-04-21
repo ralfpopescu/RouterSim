@@ -15,7 +15,7 @@ public class RoutingSim {
         Network poisonNetwork = new Network();
         int round = 0;
         boolean converged = false;
-
+        int flag = Integer.parseInt(args[2]);
         ArrayList<String> lines = new ArrayList<String>();
 
         Scanner scanner = null; //get information from text file

@@ -89,7 +89,7 @@ public class Network {
 
         router1.eventUpdate(e, r2);
         router2.eventUpdate(e, r1);
-        System.out.println(router2.printDistanceRouter());
+        // System.out.println(router2.printDistanceRouter());
 
 
 
@@ -128,13 +128,17 @@ public class Network {
         for(int i=0;i<numOfRouters;i++){
             int[] dv = routers.get(i).getDistanceVector();
             int[] nv = routers.get(i).getNextVector();
+            int[] hv = routers.get(i).getHopVector();
+
             String dvs = "";
             String nvs = "";
+            String hvs = "";
             for(int j =0; j < dv.length; j++){
                 dvs += (Integer.toString(dv[j])) + " ";
+                hvs += (Integer.toString(hv[j])) + " ";
                 nvs += (Integer.toString(nv[j])) + " ";
             }
-            stats += "Router " + i + " Distance Vector: " + dvs + ", Next Vector: " + nvs + "\n";
+            stats += "Router " + i + " Distance Vector: " + dvs + " Hop Vector: " + hvs + ", Next Vector: " + nvs + "\n";
         }
         return stats;
     }
