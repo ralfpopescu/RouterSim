@@ -47,6 +47,8 @@ public class RoutingSim {
             events.add(e);
         }
 
+
+        System.out.println("BASIC ROUTING");
         while(!converged && round < 100){ //basic routing
             for(Event e:events){
                 if (e.getRound() == round){
@@ -67,13 +69,14 @@ public class RoutingSim {
         if (round >= 100) {
           System.out.println("COUNT TO INFINITY");
         }
-        System.out.println("BASIC ROUTING");
+
         System.out.println(network.stats());
         System.out.println("Number of Rounds: " + round);
 
         converged = false;
         round = 0;
 
+        System.out.println("SPLIT HORIZON");
         while(!converged && round < 100){ //split horizon routing
             for(Event e:events){
                 if (e.getRound() == round){
@@ -84,7 +87,7 @@ public class RoutingSim {
             round++;
             if (flag == 1) {
               System.out.println("Number of Rounds: " + round);
-              System.out.println(network.stats());
+              System.out.println(splitHorizonNetwork.stats());
             }
             //System.out.println("Round: " + round);
             //System.out.println(network.stats());
@@ -92,14 +95,15 @@ public class RoutingSim {
         if (round >= 100) {
           System.out.println("COUNT TO INFINITY");
         }
-        System.out.println("SPLIT HORIZON");
+
         System.out.println("Number of Rounds: " + round);
-        System.out.println(network.stats());
+        System.out.println(splitHorizonNetwork.stats());
 
 
         converged = false;
         round = 0;
 
+        System.out.println("POISON REVERSE");
         while(!converged && round < 100){ //poison routing
             for(Event e:events){
                 if (e.getRound() == round){
@@ -110,7 +114,7 @@ public class RoutingSim {
             round++;
             if (flag == 1) {
               System.out.println("Number of Rounds: " + round);
-              System.out.println(network.stats());
+              System.out.println(poisonNetwork.stats());
             }
             //System.out.println("Round: " + round);
             //System.out.println(network.stats());
@@ -118,9 +122,9 @@ public class RoutingSim {
         if (round >= 100) {
           System.out.println("COUNT TO INFINITY");
         }
-        System.out.println("POISON");
+
         System.out.println("Number of Rounds: " + round);
-        System.out.println(network.stats());
+        System.out.println(poisonNetwork.stats());
 
     }
 

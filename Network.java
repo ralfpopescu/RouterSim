@@ -139,9 +139,9 @@ public class Network {
             String hvs = "";
             stats += "Router " + (i + 1) + " Hop Vector, NextVector: ";
             for(int j =0; j < dv.length; j++){
-                stats += Integer.toString(hv[j] + 1) + "," + Integer.toString(nv[j] + 1) + "\t";
-                dvs += (Integer.toString(dv[j]) + 1) + " ";
-                hvs += (Integer.toString(hv[j]) + 1) + " ";
+                stats += Integer.toString(hv[j]) + "," + Integer.toString(nv[j] + 1) + "\t";
+                dvs += (Integer.toString(dv[j])) + " ";
+                hvs += (Integer.toString(hv[j])) + " ";
                 nvs += (Integer.toString(nv[j]) + 1) + " ";
             }
             stats += "\n";
