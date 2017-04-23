@@ -47,7 +47,7 @@ public class RoutingSim {
             events.add(e);
         }
 
-        while(!converged){ //basic routing
+        while(!converged && round < 100){ //basic routing
             for(Event e:events){
                 if (e.getRound() == round){
                     network.executeEvent(e);
@@ -64,6 +64,9 @@ public class RoutingSim {
             //System.out.println("Round: " + round);
             //System.out.println(network.stats());
         }
+        if (round >= 100) {
+          System.out.println("COUNT TO INFINITY");
+        }
         System.out.println("BASIC ROUTING");
         System.out.println(network.stats());
         System.out.println("Number of Rounds: " + round);
@@ -71,7 +74,7 @@ public class RoutingSim {
         converged = false;
         round = 0;
 
-        while(!converged){ //split horizon routing
+        while(!converged && round < 100){ //split horizon routing
             for(Event e:events){
                 if (e.getRound() == round){
                     splitHorizonNetwork.executeEvent(e);
@@ -86,6 +89,9 @@ public class RoutingSim {
             //System.out.println("Round: " + round);
             //System.out.println(network.stats());
         }
+        if (round >= 100) {
+          System.out.println("COUNT TO INFINITY");
+        }
         System.out.println("SPLIT HORIZON");
         System.out.println("Number of Rounds: " + round);
         System.out.println(network.stats());
@@ -94,7 +100,7 @@ public class RoutingSim {
         converged = false;
         round = 0;
 
-        while(!converged){ //poison routing
+        while(!converged && round < 100){ //poison routing
             for(Event e:events){
                 if (e.getRound() == round){
                     poisonNetwork.executeEvent(e);
@@ -108,6 +114,9 @@ public class RoutingSim {
             }
             //System.out.println("Round: " + round);
             //System.out.println(network.stats());
+        }
+        if (round >= 100) {
+          System.out.println("COUNT TO INFINITY");
         }
         System.out.println("POISON");
         System.out.println("Number of Rounds: " + round);
