@@ -228,7 +228,7 @@ public class Router {
         distVect = s.getDistanceVector();
         nextVect = s.getNextVector();
         int newDist = distVect[r] + network.getAdjMatrix()[num][s.getNum()];
-        System.out.println("Distance through " + s.getNum() + ": " + newDist);
+        //System.out.println("Distance through " + s.getNum() + ": " + newDist);
         if (newDist < shortestDist || shortestDist == -1) {
           distanceVector[r] = newDist;
           nextVector[r] = s.getNum();

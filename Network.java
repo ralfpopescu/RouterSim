@@ -78,6 +78,7 @@ public class Network {
     }
 
     public void executeEvent(Event e){
+        System.out.println("Event happened!");
         int r1 = e.getRouter1();
         int r2 = e.getRouter2();
         int cost = e.getCost();
