@@ -119,7 +119,7 @@ public class Router {
             int newCostToI = network.getAdjMatrix()[num][routerID] + otherVector[i];
 
             //System.out.println("Router " + num + " Distance to " + i + ": " + originalCostToI + ", Distance from Router " + routerID + ": " + otherVector[i]);
-            if(newCostToI < originalCostToI) {
+            if(newCostToI < originalCostToI || (newCostToI > originalCostToI && routerID == nextVector[i])) {
                 //System.out.println("updated");
                 distanceVector[i] = newCostToI;
                 nextVector[i] = routerID;
@@ -228,6 +228,7 @@ public class Router {
         distVect = s.getDistanceVector();
         nextVect = s.getNextVector();
         int newDist = distVect[r] + network.getAdjMatrix()[num][s.getNum()];
+        System.out.println("Distance through " + s.getNum() + ": " + newDist);
         if (newDist < shortestDist || shortestDist == -1) {
           distanceVector[r] = newDist;
           nextVector[r] = s.getNum();

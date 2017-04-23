@@ -133,12 +133,16 @@ public class Network {
             String dvs = "";
             String nvs = "";
             String hvs = "";
+            stats += "Router " + i + " Hop Vector, NextVector: ";
             for(int j =0; j < dv.length; j++){
+                stats += Integer.toString(hv[j]) + "," + Integer.toString(nv[j]) + "\t";
                 dvs += (Integer.toString(dv[j])) + " ";
                 hvs += (Integer.toString(hv[j])) + " ";
                 nvs += (Integer.toString(nv[j])) + " ";
             }
-            stats += "Router " + i + " Distance Vector: " + dvs + " Hop Vector: " + hvs + ", Next Vector: " + nvs + "\n";
+            stats += "\n";
+
+            // stats += "Router " + i + " Distance Vector: " + dvs + " Hop Vector: " + hvs + ", Next Vector: " + nvs + "\n";
         }
         return stats;
     }
