@@ -49,6 +49,10 @@ public class Network {
         String[] split = link.split("\\s+");
         int r1 = Integer.parseInt(split[0]);
         int r2 = Integer.parseInt(split[1]);
+
+        r1 -= 1; //compensate for 1 indexing
+        r2 -= 1;
+
         int cost = Integer.parseInt(split[2]);
 
         adjMatrix[r1][r2] = cost;
@@ -133,12 +137,12 @@ public class Network {
             String dvs = "";
             String nvs = "";
             String hvs = "";
-            stats += "Router " + i + " Hop Vector, NextVector: ";
+            stats += "Router " + (i + 1) + " Hop Vector, NextVector: ";
             for(int j =0; j < dv.length; j++){
-                stats += Integer.toString(hv[j]) + "," + Integer.toString(nv[j]) + "\t";
-                dvs += (Integer.toString(dv[j])) + " ";
-                hvs += (Integer.toString(hv[j])) + " ";
-                nvs += (Integer.toString(nv[j])) + " ";
+                stats += Integer.toString(hv[j] + 1) + "," + Integer.toString(nv[j] + 1) + "\t";
+                dvs += (Integer.toString(dv[j]) + 1) + " ";
+                hvs += (Integer.toString(hv[j]) + 1) + " ";
+                nvs += (Integer.toString(nv[j]) + 1) + " ";
             }
             stats += "\n";
 

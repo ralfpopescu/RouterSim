@@ -17,11 +17,13 @@ public class Event {
 
     public Event(String s){
         String[] split = s.split("\\s+");
-        System.out.println(s);
         int round = Integer.parseInt(split[0]);
         int r1 = Integer.parseInt(split[1]);
         int r2 = Integer.parseInt(split[2]);
         int cost = Integer.parseInt(split[3]);
+
+        r1 -= 1; //compensate for 1 indexing
+        r2 -= 1;
 
         this.round = round;
         this.router1 = r1;
