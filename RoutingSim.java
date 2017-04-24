@@ -50,24 +50,31 @@ public class RoutingSim {
         int finalEvent = events.get(events.size() - 1).getRound() + 1;
         int convergenceRound = 0;
 
-        System.out.println("BASIC ROUTING");
+        System.out.println("BASIC ROUTING" + "\n");
         while(!converged && round < 100 || (round < finalEvent)){ //basic routing
             for(Event e:events){
                 if (e.getRound() == round){
                     network.executeEvent(e);
+                    if(flag == 1) {
+                        System.out.println("Event happened!");
+                    }
                 }
             }
             boolean oldConverged = converged;
             converged = !(network.propogate());
 
             if(converged && !oldConverged){
-                System.out.println("Convergence detected at round " + round);
-                System.out.println("Convergence delay was " + (round - convergenceRound));
-                convergenceRound = round;
+                if(flag == 1) {
+                    System.out.println("Convergence detected at round " + round);
+                    System.out.println("Convergence delay was " + (round - convergenceRound) + "\n");
+                }
+                //convergenceRound = round;
             }
 
             if(oldConverged && !converged){
-                System.out.println("Convergence disrupted at round " + round);
+                if(flag == 1) {
+                    System.out.println("Convergence disrupted at round " + round + "\n");
+                }
                 convergenceRound = round;
             }
 
@@ -80,35 +87,43 @@ public class RoutingSim {
 
         }
         if (round >= 100) {
-          System.out.println("COUNT TO INFINITY");
+          System.out.println("COUNT TO INFINITY" + "\n");
         }
         if (flag != 1) {
-            System.out.println(network.stats());
             System.out.println("Number of Rounds: " + (round - 1));
+            System.out.println(network.stats());
+            System.out.println("Last convergence delay was " + (round - convergenceRound - 1) + "\n");
         }
 
         converged = false;
         round = 0;
         convergenceRound = 0;
 
-        System.out.println("SPLIT HORIZON");
+        System.out.println("SPLIT HORIZON" + "\n");
         while(!converged && round < 100 || (round < finalEvent)){ //split horizon routing
             for(Event e:events){
                 if (e.getRound() == round){
                     splitHorizonNetwork.executeEvent(e);
+                    if(flag == 1) {
+                        System.out.println("Event happened!");
+                    }
                 }
             }
             boolean oldConverged = converged;
             converged = !(splitHorizonNetwork.splitHorizonPropogate());
 
             if(converged && !oldConverged){
-                System.out.println("Convergence detected at round " + round);
-                System.out.println("Convergence delay was " + (round - convergenceRound));
-                convergenceRound = round;
+                if(flag == 1) {
+                    System.out.println("Convergence detected at round " + round);
+                    System.out.println("Convergence delay was " + (round - convergenceRound) + "\n");
+                }
+                //convergenceRound = round;
             }
 
             if(oldConverged && !converged){
-                System.out.println("Convergence disrupted at round " + round);
+                if(flag == 1) {
+                    System.out.println("Convergence disrupted at round " + round + "\n");
+                }
                 convergenceRound = round;
             }
 
@@ -121,11 +136,12 @@ public class RoutingSim {
             //System.out.println(network.stats());
         }
         if (round >= 100) {
-          System.out.println("COUNT TO INFINITY");
+          System.out.println("COUNT TO INFINITY" + "\n");
         }
         if (flag != 1) {
             System.out.println("Number of Rounds: " + (round - 1));
             System.out.println(splitHorizonNetwork.stats());
+            System.out.println("Last convergence delay was " + (round - convergenceRound  - 1) + "\n");
         }
 
 
@@ -133,24 +149,31 @@ public class RoutingSim {
         round = 0;
         convergenceRound = 0;
 
-        System.out.println("POISON REVERSE");
+        System.out.println("POISON REVERSE" + "\n");
         while(!converged && round < 100 || (round < finalEvent)){ //poison routing
             for(Event e:events){
                 if (e.getRound() == round){
                     poisonNetwork.executeEvent(e);
+                    if(flag == 1) {
+                        System.out.println("Event happened!");
+                    }
                 }
             }
             boolean oldConverged = converged;
             converged = !(poisonNetwork.poisonPropogate());
 
             if(converged && !oldConverged){
-                System.out.println("Convergence detected at round " + round);
-                System.out.println("Convergence delay was " + (round - convergenceRound));
-                convergenceRound = round;
+                if(flag == 1) {
+                    System.out.println("Convergence detected at round " + round);
+                    System.out.println("Convergence delay was " + (round - convergenceRound) + "\n");
+                }
+                //convergenceRound = round;
             }
 
             if(oldConverged && !converged){
-                System.out.println("Convergence disrupted at round " + round);
+                if(flag == 1) {
+                    System.out.println("Convergence disrupted at round " + round + "\n");
+                }
                 convergenceRound = round;
             }
 
@@ -158,16 +181,18 @@ public class RoutingSim {
             if (flag == 1) {
               System.out.println("Number of Rounds: " + round);
               System.out.println(poisonNetwork.stats());
+
             }
             //System.out.println("Round: " + round);
             //System.out.println(network.stats());
         }
         if (round >= 100) {
-          System.out.println("COUNT TO INFINITY");
+          System.out.println("COUNT TO INFINITY" + "\n");
         }
         if (flag != 1) {
             System.out.println("Number of Rounds: " + (round - 1));
             System.out.println(poisonNetwork.stats());
+            System.out.println("Last convergence delay was " + (round - convergenceRound - 1) + "\n");
         }
 
     }

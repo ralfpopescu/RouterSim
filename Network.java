@@ -78,7 +78,7 @@ public class Network {
     }
 
     public void executeEvent(Event e){
-        System.out.println("Event happened!");
+
         int r1 = e.getRouter1();
         int r2 = e.getRouter2();
         int cost = e.getCost();
@@ -140,7 +140,7 @@ public class Network {
             String hvs = "";
             stats += "Router " + (i + 1) + " Hop Vector, NextVector: ";
             for(int j =0; j < dv.length; j++){
-                stats += Integer.toString(hv[j]) + "," + Integer.toString(nv[j] + 1) + "\t";
+                stats += Integer.toString(nv[j] + 1) + "," + Integer.toString(hv[j]) + "\t";
                 dvs += (Integer.toString(dv[j])) + " ";
                 hvs += (Integer.toString(hv[j])) + " ";
                 nvs += (Integer.toString(nv[j]) + 1) + " ";
