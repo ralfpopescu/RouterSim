@@ -197,6 +197,11 @@ public class Router {
                 distanceVector[i] = adjMatrix[num][i];
                 hopVector[i] = 1;
                 nextVector[i] = i;
+            } else {
+                if(i != num) {
+                    hopVector[i] = -1;
+                    nextVector[i] = -1;
+                }
             }
         }
         distanceVector[num] = 0;

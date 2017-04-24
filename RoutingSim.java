@@ -51,6 +51,11 @@ public class RoutingSim {
         int convergenceRound = 0;
 
         System.out.println("BASIC ROUTING" + "\n");
+        if (flag == 1) {
+            System.out.println("Initial Round");
+            System.out.println(network.stats());
+        }
+
         while(!converged && round < 100 || (round < finalEvent)){ //basic routing
             for(Event e:events){
                 if (e.getRound() == round){
@@ -99,6 +104,10 @@ public class RoutingSim {
         convergenceRound = 0;
 
         System.out.println("SPLIT HORIZON" + "\n");
+        if (flag == 1) {
+            System.out.println("Initial Round");
+            System.out.println(splitHorizonNetwork.stats());
+        }
         while(!converged && round < 100 || (round < finalEvent)){ //split horizon routing
             for(Event e:events){
                 if (e.getRound() == round){
@@ -150,6 +159,10 @@ public class RoutingSim {
         convergenceRound = 0;
 
         System.out.println("POISON REVERSE" + "\n");
+        if (flag == 1) {
+            System.out.println("Initial Round");
+            System.out.println(poisonNetwork.stats());
+        }
         while(!converged && round < 100 || (round < finalEvent)){ //poison routing
             for(Event e:events){
                 if (e.getRound() == round){
