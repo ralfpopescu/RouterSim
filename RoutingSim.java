@@ -13,7 +13,7 @@ public class RoutingSim {
         Network network = new Network();
         Network splitHorizonNetwork = new Network();
         Network poisonNetwork = new Network();
-        int round = 0;
+        int round = 1;
         boolean converged = false;
         int flag = Integer.parseInt(args[2]);
         ArrayList<String> lines = new ArrayList<String>();
@@ -78,12 +78,11 @@ public class RoutingSim {
                 convergenceRound = round;
             }
 
-
-            round++;
             if (flag == 1) {
-              System.out.println("Number of Rounds: " + round);
+              System.out.println("Round: " + round);
               System.out.println(network.stats());
             }
+            round++;
 
         }
         if (round >= 100) {
@@ -96,7 +95,7 @@ public class RoutingSim {
         }
 
         converged = false;
-        round = 0;
+        round = 1;
         convergenceRound = 0;
 
         System.out.println("SPLIT HORIZON" + "\n");
@@ -127,11 +126,12 @@ public class RoutingSim {
                 convergenceRound = round;
             }
 
-            round++;
+
             if (flag == 1) {
-              System.out.println("Number of Rounds: " + round);
+              System.out.println("Round: " + round);
               System.out.println(splitHorizonNetwork.stats());
             }
+            round++;
             //System.out.println("Round: " + round);
             //System.out.println(network.stats());
         }
@@ -146,7 +146,7 @@ public class RoutingSim {
 
 
         converged = false;
-        round = 0;
+        round = 1;
         convergenceRound = 0;
 
         System.out.println("POISON REVERSE" + "\n");
@@ -177,12 +177,13 @@ public class RoutingSim {
                 convergenceRound = round;
             }
 
-            round++;
+
             if (flag == 1) {
-              System.out.println("Number of Rounds: " + round);
+              System.out.println("Round: " + round);
               System.out.println(poisonNetwork.stats());
 
             }
+            round++;
             //System.out.println("Round: " + round);
             //System.out.println(network.stats());
         }
